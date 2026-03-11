@@ -3,19 +3,19 @@ import os
 import sys
 
 from idlelib.browser import ModuleBrowser, ModuleBrowserTreeItem
-from idlelib.pyshell import PyShellFileList
 from idlelib.tree import TreeItem
 
 
 class PathBrowser(ModuleBrowser):
 
-    def __init__(self, flist, *, _htest=False, _utest=False):
+    def __init__(self, master, *, _htest=False, _utest=False):
         """
         _htest - bool, change box location when running htest
         """
+        self.master = master
         self._htest = _htest
         self._utest = _utest
-        self.init(flist)
+        self.init()
 
     def settitle(self):
         "Set window titles."
@@ -99,14 +99,9 @@ class DirBrowserTreeItem(TreeItem):
         return sorted
 
 
-def _path_browser(parent):  # htest #
-    flist = PyShellFileList(parent)
-    PathBrowser(flist, _htest=True)
-    parent.mainloop()
-
 if __name__ == "__main__":
     from unittest import main
     main('idlelib.idle_test.test_pathbrowser', verbosity=2, exit=False)
 
     from idlelib.idle_test.htest import run
-    run(_path_browser)
+    run(PathBrowser)
